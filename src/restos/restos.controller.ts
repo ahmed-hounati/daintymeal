@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, ValidationPipe } from '@nestjs/common';
 import { RestosService } from './restos.service';
 import { CreateRestoDto } from './dto/create-resto.dto';
 import { UpdateRestoDto } from './dto/update-resto.dto';
@@ -7,8 +7,9 @@ import { UpdateRestoDto } from './dto/update-resto.dto';
 export class RestosController {
     constructor(private readonly restosService: RestosService) { }
     @Get()
-    findAll() {
-        return this.restosService.findAll();
+    async findAll(@Query('lang') lang: string) {
+        const language = lang || 'en';
+        return this.restosService.findAll(language);
     }
 
     @Get(':id')

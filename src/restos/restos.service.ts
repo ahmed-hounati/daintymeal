@@ -9,9 +9,14 @@ import { UpdateRestoDto } from './dto/update-resto.dto';
 export class RestosService {
     constructor(@InjectModel(Resto.name) private restoModel: Model<Resto>) { }
 
-    findAll() {
+    async findAll(language: string): Promise<any>  {
         const restos = this.restoModel.find().exec();
-        return restos
+        return (await restos).map((restaurant) => {
+            return {
+                ...restaurant.toObject(),
+                name: restaurant.name[language],
+            };
+        });
     }
 
     async findOne(id: string) {
