@@ -15,6 +15,7 @@ export class RestosService {
             return {
                 ...restaurant.toObject(),
                 name: restaurant.name[language],
+                address: restaurant.address[language]
             };
         });
     }
