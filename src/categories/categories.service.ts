@@ -22,7 +22,6 @@ export class CategorieService {
       image: uploadedImage.secure_url, 
       translation,
     });
-
     return createdCategorie.save();
   }
 
