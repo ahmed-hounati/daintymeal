@@ -1,6 +1,6 @@
-import { IsNotEmpty, IsString, IsEnum, IsArray, ValidateNested } from 'class-validator';
+import { IsNotEmpty, IsString, IsEnum, IsArray, ValidateNested, IsMongoId } from 'class-validator';
 
-import { Status, Statics, Image, Category } from '../../schema/resto.schema';
+import { Status, Statics, Image } from '../../schema/resto.schema';
 import { Type } from 'class-transformer';
 
 export class TranslationsDto {
@@ -43,8 +43,8 @@ export class CreateRestoDto {
     address: Address;
 
     @IsNotEmpty()
-    @ValidateNested()
-    category: Category;
+    @IsMongoId({ each: true })
+    categoryIds: string[];
 
     @IsNotEmpty()
     @IsArray()

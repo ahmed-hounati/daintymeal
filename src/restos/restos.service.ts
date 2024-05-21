@@ -4,10 +4,11 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateRestoDto } from './dto/create-resto.dto';
 import { UpdateRestoDto } from './dto/update-resto.dto';
+import { Categorie } from 'src/schema/category.schema';
 
 @Injectable()
 export class RestosService {
-    constructor(@InjectModel(Resto.name) private restoModel: Model<Resto>) { }
+    constructor(@InjectModel(Resto.name) private restoModel: Model<Resto>, @InjectModel(Categorie.name) private categorieModel: Model<Categorie>,) { }
 
     async findAll(language: string): Promise<any>  {
         const restos = this.restoModel.find().exec();
@@ -29,13 +30,32 @@ export class RestosService {
     }
 
     async create(createRestoDto: CreateRestoDto): Promise<Resto> {
-        const createdResto = new this.restoModel(createRestoDto)
-        const existingResto = await this.restoModel.findOne({ name: createRestoDto.name }).exec()
+        const { name, address, categoryIds, image, status, rating, workingTime, valid, statics  } = createRestoDto;
+        const existingResto = await this.restoModel.findOne({ 'name.en': name.en }).exec();
         if (existingResto) {
-            throw new NotFoundException('Restaurant already found')
+            throw new NotFoundException('Restaurant with this name already exists');
         }
-        return await createdResto.save();
+
+
+        const categories = await this.categorieModel.find({ _id: { $in: categoryIds } }).exec();
+        if (categories.length !== categoryIds.length) {
+            throw new NotFoundException('One or more categories not found');
+        }
+        const createdResto = new this.restoModel({
+            name,
+            categories,
+            address,
+            image,
+            status,
+            rating,
+            workingTime,
+            valid,
+            statics,
+        });
+
+        return createdResto.save();
     }
+
 
 
     async update(id: string, updateRestoDto: UpdateRestoDto) {

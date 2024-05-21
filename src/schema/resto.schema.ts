@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import { Categorie } from './category.schema';
 
 export enum Status {
     ACTIVE = "ACTIVE",
@@ -22,9 +23,6 @@ export interface Image {
     format: string;
 }
 
-export interface Category {
-    name: string;
-}
 export interface Translations {
     en: string;
     fr: string;
@@ -41,7 +39,7 @@ export interface RestoInterface {
     _id: string;
     name: Translations;
     address: Address;
-    category: Category[];
+    categories: Categorie[];
     image: Image[];
     status: Status;
     rating: number;
@@ -57,10 +55,10 @@ export class Resto {
     @Prop({ type: Object })
     name: Translations;
 
-    @Prop()
-    category: Category[];
+    @Prop({ type: [{ type: Object }], required: true })
+    categories: Categorie[];
 
-    @Prop({type: Object})
+    @Prop({ type: Object })
     address: Address;
 
     @Prop()
