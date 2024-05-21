@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsString, IsArray, ValidateNested, IsBoolean, IsDate } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString, IsArray, ValidateNested, IsBoolean, IsDate, IsObject } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class NameDto {
@@ -50,9 +50,9 @@ export class CreateItemDto {
     @Type(() => NameDto)
     name: NameDto;
 
-    @IsString()
+    @IsObject()
     @IsNotEmpty()
-    category: string;
+    category: Object;
 
     @IsArray()
     @ValidateNested({ each: true })

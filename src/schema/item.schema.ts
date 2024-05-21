@@ -29,10 +29,14 @@ export interface Statics {
     countOrders: number;
 }
 
+export interface Category {
+    name: string
+}
+
 export interface ItemInterface {
     _id: string;
     name: Name;
-    category: string;
+    category: Category;
     image: Image;
     status: Status;
     statics: Statics;
@@ -47,8 +51,8 @@ export class Item {
     @Prop({type: Object})
     name: Name;
 
-    @Prop()
-    category: string;
+    @Prop({type: Object})
+    category: Category;
 
     @Prop()
     image: Image[];
