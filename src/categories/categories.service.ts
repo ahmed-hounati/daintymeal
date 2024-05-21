@@ -14,7 +14,7 @@ export class CategorieService {
 
   async create(createCategorieDto: CreateCategorieDto): Promise<Categorie> {
     const { name, image, translation } = createCategorieDto;
-    const uploadedImage = await this.cloudinaryService.uploadImage(image, 'diantymealCategories');
+    const uploadedImage = await this.cloudinaryService.uploadImage(image, 'Categories');
 
     
     const createdCategorie = new this.categorieModel({

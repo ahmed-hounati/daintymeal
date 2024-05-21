@@ -4,12 +4,23 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CategorieModule } from './categories/categories.module';
+import { CommentModule } from './comments/comments.module';
 
 @Module({
-    imports: [
-      MongooseModule.forRoot('mongodb+srv://mohamadtalemsi:FzuJnCis9uXPeMNP@nestproject.7qpvmqh.mongodb.net/daintymeal_nestJS?retryWrites=true&w=majority&appName=NestProject'), 
-      CategorieModule,
-    ],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGODB_URI'),
+      }),
+      inject: [ConfigService],
+    }),
+    CategorieModule,
+    CommentModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

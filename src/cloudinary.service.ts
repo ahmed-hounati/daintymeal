@@ -14,7 +14,7 @@ export class CloudinaryService {
 
   async uploadImage(imageUrl: string ,  folderName: string): Promise<UploadApiResponse> {
     return cloudinary.uploader.upload(imageUrl, {
-        folder: "/Categories" 
+        folder: folderName 
       });
   }
 }
