@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Item } from './item.schema';
+import { Item } from '../schema/item.schema';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 
@@ -9,9 +9,14 @@ import { UpdateItemDto } from './dto/update-item.dto';
 export class ItemsService {
     constructor(@InjectModel(Item.name) private itemModel: Model<Item>) { }
 
-    findAll() {
+    async findAll(language: string): Promise<any> {
         const items = this.itemModel.find().exec();
-        return items
+        return (await items).map((item) => {
+            return {
+                ...item.toObject(),
+                name: item.name[language],
+            };
+        });
     }
 
     async findOne(id: string) {

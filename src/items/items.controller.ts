@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, ValidationPipe } from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
@@ -8,8 +8,9 @@ export class ItemsController {
     constructor(private readonly itemsService: ItemsService) { }
 
     @Get()
-    findAll() {
-        return this.itemsService.findAll();
+    async findAll(@Query('lang') lang: string) {
+        const language = lang || 'en';
+        return this.itemsService.findAll(language);
     }
 
     @Get(':id')
