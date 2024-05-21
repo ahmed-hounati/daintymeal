@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Resto } from './resto.schema';
+import { Resto } from '../schema/resto.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateRestoDto } from './dto/create-resto.dto';

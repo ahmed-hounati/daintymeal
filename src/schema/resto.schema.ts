@@ -31,9 +31,16 @@ export interface Translations {
     ar: string;
 }
 
+export interface Address {
+    en: string;
+    fr: string;
+    ar: string;
+}
+
 export interface RestoInterface {
     _id: string;
     name: Translations;
+    address: Address;
     category: Category[];
     image: Image[];
     status: Status;
@@ -52,6 +59,9 @@ export class Resto {
 
     @Prop()
     category: Category[];
+
+    @Prop({type: Object})
+    address: Address;
 
     @Prop()
     image: Image[];

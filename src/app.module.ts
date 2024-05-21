@@ -1,8 +1,12 @@
 import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { CategorieModule } from './categories/categories.module';
+import { CommentModule } from './comments/comments.module';
 import { ItemsModule } from './items/items.module';
 import { RestosModule } from './restos/restos.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -16,8 +20,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       }),
       inject: [ConfigService],
     }),
+    CategorieModule,
+    CommentModule,
     ItemsModule,
     RestosModule
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
