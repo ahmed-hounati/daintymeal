@@ -7,6 +7,7 @@ import { CategorieModule } from './categories/categories.module';
 import { CommentModule } from './comments/comments.module';
 import { ItemsModule } from './items/items.module';
 import { RestosModule } from './restos/restos.module';
+import { AddressModule } from './address/address.module';
 
 @Module({
   imports: [
@@ -23,9 +24,10 @@ import { RestosModule } from './restos/restos.module';
     CategorieModule,
     CommentModule,
     ItemsModule,
-    RestosModule
+    RestosModule,
+    AddressModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
