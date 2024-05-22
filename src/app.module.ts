@@ -7,6 +7,8 @@ import { CategorieModule } from './categories/categories.module';
 import { CommentModule } from './comments/comments.module';
 import { ItemsModule } from './items/items.module';
 import { RestosModule } from './restos/restos.module';
+import { ReviewplatsController } from './reviewplats/reviewplats.controller';
+import { ReviewplatsModule } from './reviewplats/reviewplats.module';
 
 @Module({
   imports: [
@@ -23,7 +25,8 @@ import { RestosModule } from './restos/restos.module';
     CategorieModule,
     CommentModule,
     ItemsModule,
-    RestosModule
+    RestosModule,
+    ReviewplatsModule
   ],
   controllers: [AppController],
   providers: [AppService],

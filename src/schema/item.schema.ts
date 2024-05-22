@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import { Interface } from 'readline';
+import { Categorie } from './category.schema';
 
 
 
@@ -16,12 +17,6 @@ enum Status {
     banned = "BANNED"
 }
 
-export interface Image {
-    public_id: string;
-    url: string;
-    secure_url: string;
-    format: string;
-}
 
 export interface Statics {
     contRatings: number;
@@ -29,15 +24,12 @@ export interface Statics {
     countOrders: number;
 }
 
-export interface Category {
-    name: string
-}
 
 export interface ItemInterface {
     _id: string;
     name: Name;
-    category: Category;
-    image: Image;
+    categories: Categorie;
+    image: string[];
     status: Status;
     statics: Statics;
     created_at: Date;
@@ -51,11 +43,11 @@ export class Item {
     @Prop({type: Object})
     name: Name;
 
-    @Prop({type: Object})
-    category: Category;
+    @Prop({ type: [{ type: Object }], required: true })
+    categorie: Categorie;
 
     @Prop()
-    image: Image[];
+    image: string[];
 
     @Prop({ type: Object })
     statics: Statics;
@@ -68,5 +60,8 @@ export class Item {
 
     @Prop()
     valid: boolean;
+
+    @Prop({ default: 0 })
+    rating: number;
 }
 export const ItemSchema = SchemaFactory.createForClass(Item);

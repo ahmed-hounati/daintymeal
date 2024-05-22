@@ -1,7 +1,7 @@
-import { IsInt, IsString, Max, Min } from "class-validator";
+import { IsInt, IsNotEmpty, IsString, Max, Min } from "class-validator";
 
 
-class  CreateByDto{
+class CreateByDto {
     @IsString()
     name: string;
 
@@ -9,18 +9,22 @@ class  CreateByDto{
     @IsString()
     imageProfile: string;
 }
-export class CreateCommentDto{
+export class CreateCommentDto {
     @IsString()
     createdBy: CreateByDto;
 
     @IsString()
-    comment:string;
+    comment: string;
 
     @IsInt()
     @Min(0)
     @Max(5)
-    rating:number;
+    rating: number;
 
     @IsString()
-    addedAt:Date;
+    addedAt: Date;
+
+    @IsNotEmpty()
+    @IsString()
+    restoId: string;
 }

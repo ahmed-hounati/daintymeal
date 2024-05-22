@@ -5,10 +5,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { CreateRestoDto } from './dto/create-resto.dto';
 import { UpdateRestoDto } from './dto/update-resto.dto';
 import { Categorie } from 'src/schema/category.schema';
+import { CloudinaryService } from 'src/cloudinary.service';
 
 @Injectable()
 export class RestosService {
-    constructor(@InjectModel(Resto.name) private restoModel: Model<Resto>, @InjectModel(Categorie.name) private categorieModel: Model<Categorie>,) { }
+    constructor(@InjectModel(Resto.name) private restoModel: Model<Resto>, @InjectModel(Categorie.name) private categorieModel: Model<Categorie>,private cloudinaryService: CloudinaryService,) { }
 
     async findAll(language: string): Promise<any>  {
         const restos = this.restoModel.find().exec();
@@ -41,11 +42,21 @@ export class RestosService {
         if (categories.length !== categoryIds.length) {
             throw new NotFoundException('One or more categories not found');
         }
+        const uploadedImages = [];
+        for (const imageUrl of image) {
+            try {
+                const uploadedImage = await this.cloudinaryService.uploadImage(imageUrl, 'restaurant');
+                uploadedImages.push(uploadedImage.secure_url);
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                throw new NotFoundException('Error uploading image(s)');
+            }
+        }
         const createdResto = new this.restoModel({
             name,
             categories,
             address,
-            image,
+            image: uploadedImages,
             status,
             rating,
             workingTime,

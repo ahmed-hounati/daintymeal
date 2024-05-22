@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString, IsEnum, IsArray, ValidateNested, IsMongoId } from 'class-validator';
 
-import { Status, Statics, Image } from '../../schema/resto.schema';
+import { Status, Statics} from '../../schema/resto.schema';
 import { Type } from 'class-transformer';
 
 export class TranslationsDto {
@@ -48,8 +48,7 @@ export class CreateRestoDto {
 
     @IsNotEmpty()
     @IsArray()
-    @ValidateNested({ each: true })
-    image: Image[];
+    image: string[];
 
     @IsNotEmpty()
     @IsEnum(Status)

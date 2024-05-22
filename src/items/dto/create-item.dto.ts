@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsString, IsArray, ValidateNested, IsBoolean, IsDate, IsObject } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString, IsArray, ValidateNested, IsBoolean, IsDate, IsObject, IsMongoId } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class NameDto {
@@ -15,23 +15,6 @@ export class NameDto {
     ar: string;
 }
 
-export class ImageDto {
-    @IsString()
-    @IsNotEmpty()
-    public_id: string;
-
-    @IsString()
-    @IsNotEmpty()
-    url: string;
-
-    @IsString()
-    @IsNotEmpty()
-    secure_url: string;
-
-    @IsString()
-    @IsNotEmpty()
-    format: string;
-}
 
 export class StaticsDto {
     @IsNotEmpty()
@@ -50,14 +33,12 @@ export class CreateItemDto {
     @Type(() => NameDto)
     name: NameDto;
 
-    @IsObject()
+    @IsMongoId({ each: true })
     @IsNotEmpty()
-    category: Object;
+    categoryId: string;
 
     @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => ImageDto)
-    image: ImageDto[];
+    image: string[];
 
     @ValidateNested()
     @Type(() => StaticsDto)

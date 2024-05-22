@@ -15,14 +15,6 @@ export interface Statics {
     countPlats: number;
     countComments: number;
 }
-
-export interface Image {
-    public_id: string;
-    url: string;
-    secure_url: string;
-    format: string;
-}
-
 export interface Translations {
     en: string;
     fr: string;
@@ -39,8 +31,8 @@ export interface RestoInterface {
     _id: string;
     name: Translations;
     address: Address;
-    categories: Categorie[];
-    image: Image[];
+    categorie: Categorie[];
+    image: string[];
     status: Status;
     rating: number;
     workingTime: string;
@@ -62,7 +54,7 @@ export class Resto {
     address: Address;
 
     @Prop()
-    image: Image[];
+    image: string[];
 
     @Prop({ type: String, enum: Object.values(Status) })
     status: Status;
