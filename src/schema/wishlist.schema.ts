@@ -9,9 +9,8 @@ export class Wishlist {
     @Prop()
     user_code: string;
 
-
     @Prop({ type: [{ type: Object }], required: true })
-    items: Plat[];
+    plats: Plat[];
 
     @Prop()
     addedAt: Date;

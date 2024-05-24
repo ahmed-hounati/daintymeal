@@ -1,4 +1,4 @@
-import { IsString, IsEmail, IsDate, IsEnum, IsArray, ValidateNested, IsOptional } from 'class-validator';
+import { IsString, IsEmail, IsDate, IsEnum, IsArray, ValidateNested, IsOptional, IsNotEmpty } from 'class-validator';
 import { Type } from 'class-transformer';
 
 class Address {
@@ -20,22 +20,28 @@ enum Gender {
 }
 
 export class CreateUserDto {
+    @IsNotEmpty()
     @IsString()
     username: string;
 
     @IsString()
+    @IsNotEmpty()
     user_code: string;
 
     @IsEmail()
+    @IsNotEmpty()
     email: string;
 
     @IsString()
+    @IsNotEmpty()
     avatar: string;
 
     @IsString()
+    @IsNotEmpty()
     fullname: string;
 
     @IsEnum(Gender)
+    @IsNotEmpty()
     gender: Gender;
 
     @IsDate()

@@ -47,9 +47,4 @@ export class CreatePlatDto {
 
     @IsNumber()
     discount: number;
-
-    @IsDate()
-    @Type(() => Date)
-    @IsNotEmpty()
-    created_at: Date;
 }
