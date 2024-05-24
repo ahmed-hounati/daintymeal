@@ -13,7 +13,6 @@ export class PlatService {
     ) { }
 
     async create(createPlatDto: CreatePlatDto): Promise<Plat> {
-        const generatePlatCode = await this.generatePlatCode();
         const { category_code, ...rest } = createPlatDto;
 
         const category = await this.categorieModel.findOne({ category_code });
@@ -21,9 +20,11 @@ export class PlatService {
         if (!category) {
             throw new NotFoundException(`Category with code ${category_code} not found`);
         }
+        const platCode = await this.generatePlatCode();
 
         const plat = new this.platModel({
             ...rest,
+            item_code: platCode,
             category: category,
         });
 
@@ -32,7 +33,7 @@ export class PlatService {
 
     private async generatePlatCode(): Promise<string> {
         const plats = await this.platModel.find().sort({ item_code: -1 }).limit(1).exec();
-        const lastPlatCode = plats.length ? plats[0].item_code : 'plt_000';
+        const lastPlatCode = plats.length ? plats[0].plat_code : 'plt_000';
         const newCodeNumber = parseInt(lastPlatCode.split('_')[1]) + 1;
         return `plt_${newCodeNumber.toString().padStart(3, '0')}`;
     }

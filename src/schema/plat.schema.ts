@@ -7,7 +7,7 @@ export type PlatDocument = Plat & Document;
 @Schema()
 export class Plat {
     @Prop({ required: true })
-    item_code: string;
+    plat_code: string;
 
     @Prop({ required: true })
     name: string;
@@ -43,7 +43,7 @@ export class Plat {
     @Prop({ default: 0 })
     discount: number;
 
-    @Prop({ required: true })
+    @Prop({ default: Date.now })
     created_at: Date;
 }
 

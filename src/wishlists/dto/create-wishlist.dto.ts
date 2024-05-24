@@ -6,7 +6,7 @@ export class WishlistDto {
 
     @IsArray()
     @IsString({ each: true })
-    readonly items_codes: string[];
+    readonly item_code: string[];
 
     @IsDate()
     readonly addedAt: Date;
