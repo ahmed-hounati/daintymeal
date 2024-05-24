@@ -7,8 +7,9 @@ import { CategorieModule } from './categories/categories.module';
 import { CommentModule } from './comments/comments.module';
 import { ItemsModule } from './items/items.module';
 import { RestosModule } from './restos/restos.module';
-import { ReviewplatsController } from './reviewplats/reviewplats.controller';
 import { ReviewplatsModule } from './reviewplats/reviewplats.module';
+import { AddressModule } from './address/address.module';
+import { FilterModule } from './filters/filters.module';
 
 @Module({
   imports: [
@@ -26,9 +27,11 @@ import { ReviewplatsModule } from './reviewplats/reviewplats.module';
     CommentModule,
     ItemsModule,
     RestosModule,
-    ReviewplatsModule
+    ReviewplatsModule,
+    AddressModule,
+    FilterModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

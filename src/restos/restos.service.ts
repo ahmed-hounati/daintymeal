@@ -4,16 +4,20 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateRestoDto } from './dto/create-resto.dto';
 import { UpdateRestoDto } from './dto/update-resto.dto';
-import { Categorie } from 'src/schema/category.schema';
 import { CloudinaryService } from 'src/cloudinary.service';
-
+import { Categorie } from '../schema/category.schema';
+import { Address } from '../schema/address.schema';
 @Injectable()
 export class RestosService {
-    constructor(@InjectModel(Resto.name) private restoModel: Model<Resto>, @InjectModel(Categorie.name) private categorieModel: Model<Categorie>,private cloudinaryService: CloudinaryService,) { }
-
-    async findAll(language: string): Promise<any>  {
-        const restos = this.restoModel.find().exec();
-        return (await restos).map((restaurant) => {
+    constructor(
+        @InjectModel(Resto.name) private restoModel: Model<Resto>,
+        @InjectModel(Categorie.name) private categorieModel: Model<Categorie>,
+        @InjectModel(Address.name) private addressModel: Model<Address>,
+        private cloudinaryService: CloudinaryService
+    ) {}
+    async findAll(language: string): Promise<any> {
+        const restos = await this.restoModel.find().exec();
+        return restos.map((restaurant) => {
             return {
                 ...restaurant.toObject(),
                 name: restaurant.name[language],
@@ -31,12 +35,12 @@ export class RestosService {
     }
 
     async create(createRestoDto: CreateRestoDto): Promise<Resto> {
-        const { name, address, categoryIds, image, status, rating, workingTime, valid, statics  } = createRestoDto;
+        const { name, address, categoryIds, image, status, rating, workingTime, valid, statics } = createRestoDto;
+
         const existingResto = await this.restoModel.findOne({ 'name.en': name.en }).exec();
         if (existingResto) {
             throw new NotFoundException('Restaurant with this name already exists');
         }
-
 
         const categories = await this.categorieModel.find({ _id: { $in: categoryIds } }).exec();
         if (categories.length !== categoryIds.length) {
@@ -52,10 +56,14 @@ export class RestosService {
                 throw new NotFoundException('Error uploading image(s)');
             }
         }
+        const addressObj = await this.addressModel.findById(address).exec();
+        if (!addressObj) {
+            throw new NotFoundException('Address not found');
+        }   
         const createdResto = new this.restoModel({
             name,
             categories,
-            address,
+            address: addressObj,
             image: uploadedImages,
             status,
             rating,
@@ -63,11 +71,8 @@ export class RestosService {
             valid,
             statics,
         });
-
         return createdResto.save();
     }
-
-
 
     async update(id: string, updateRestoDto: UpdateRestoDto) {
         const updatedResto = this.restoModel.findByIdAndUpdate(id, updateRestoDto, { new: true });
