@@ -8,6 +8,12 @@ import { CommentModule } from './comments/comments.module';
 import { ItemsModule } from './items/items.module';
 import { RestosModule } from './restos/restos.module';
 import { AddressModule } from './address/address.module';
+import { UsersService } from './users/users.service';
+import { UsersController } from './users/users.controller';
+import { UsersModule } from './users/users.module';
+import { wishlistsService } from './wishlists/wishlists.service';
+import { WishlistsController } from './wishlists/wishlists.controller';
+import { wishlistsModule } from './wishlists/wishlists.module';
 
 @Module({
   imports: [
@@ -25,9 +31,11 @@ import { AddressModule } from './address/address.module';
     CommentModule,
     ItemsModule,
     RestosModule,
-    AddressModule
+    AddressModule,
+    UsersModule,
+    wishlistsModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, UsersController, WishlistsController],
+  providers: [AppService, UsersService, wishlistsService],
 })
 export class AppModule { }

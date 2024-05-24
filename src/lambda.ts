@@ -1,33 +1,19 @@
+import { HttpStatus } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { Callback, Context, Handler } from 'aws-lambda';
 import { AppModule } from './app.module';
-import { ExpressAdapter } from '@nestjs/platform-express';
-import express from 'express';
-import { configure } from '@vendia/serverless-express';
+import { AppService } from './app.service';
 
-const expressApp = express();
-const adapter = new ExpressAdapter(expressApp);
-let configuredServer: (arg0: any, arg1: any) => any;
+export const handler: Handler = async (
+  event: any,
+  context: Context,
+  callback: Callback,
+) => {
+  const appContext = await NestFactory.createApplicationContext(AppModule);
+  const appService = appContext.get(AppService);
 
-async function bootstrap() {
-    try {
-        const app = await NestFactory.create(AppModule, adapter);
-        app.enableCors();
-        await app.init();
-        configuredServer = configure({ app: expressApp });
-    } catch (error) {
-        console.error('Error bootstrapping NestJS application:', error);
-        throw error;
-    }
-}
-
-bootstrap();
-
-exports.handler = async (event, context) => {
-
-    if (!configuredServer) {
-        console.log('Server not configured. Bootstrapping...');
-        await bootstrap();
-    }
-
-    return configuredServer(event, context);
+  return {
+    body: appService.getHello(),
+    statusCode: HttpStatus.OK,
+  };
 };
