@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Document } from 'mongoose';
 
-export type CategorieDocument = Document & Categorie;
+export type CategorieDocument = Categorie & Document;
 
 class Translation {
   @Prop({ type: String })
@@ -21,13 +21,16 @@ export const TranslationsSchema = SchemaFactory.createForClass(Translations);
 
 @Schema()
 export class Categorie {
-  @Prop({ unique: true })
+  @Prop({ unique: true, required: true })
+  category_code: string;
+
+  @Prop({ unique: true, required: true })
   name: string;
 
-  @Prop()
+  @Prop({ required: true })
   image: string;
 
-  @Prop({ type: TranslationsSchema, _id: false })
+  @Prop({ type: TranslationsSchema, _id: false, required: true })
   translation: Translations;
 }
 

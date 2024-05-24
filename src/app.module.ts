@@ -5,7 +5,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CategorieModule } from './categories/categories.module';
 import { CommentModule } from './comments/comments.module';
-import { ItemsModule } from './items/items.module';
 import { RestosModule } from './restos/restos.module';
 import { AddressModule } from './address/address.module';
 import { UsersService } from './users/users.service';
@@ -14,6 +13,7 @@ import { UsersModule } from './users/users.module';
 import { wishlistsService } from './wishlists/wishlists.service';
 import { WishlistsController } from './wishlists/wishlists.controller';
 import { wishlistsModule } from './wishlists/wishlists.module';
+import { PlatModule } from './plats/plats.module';
 
 @Module({
   imports: [
@@ -29,11 +29,11 @@ import { wishlistsModule } from './wishlists/wishlists.module';
     }),
     CategorieModule,
     CommentModule,
-    ItemsModule,
     RestosModule,
     AddressModule,
     UsersModule,
-    wishlistsModule
+    wishlistsModule,
+    PlatModule
   ],
   controllers: [AppController, UsersController, WishlistsController],
   providers: [AppService, UsersService, wishlistsService],
