@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { Item } from './item.schema';
+import { Plat } from '../schema/plat.schema';
 
 export type WishlistItemDocument = Wishlist & Document;
 
@@ -11,7 +11,7 @@ export class Wishlist {
 
 
     @Prop({ type: [{ type: Object }], required: true })
-    items: Item[];
+    items: Plat[];
 
     @Prop()
     addedAt: Date;

@@ -18,7 +18,6 @@ export class UsersService {
 
         const wishlist = await this.wishlistService.create(savedUser.user_code);
 
-        savedUser.wishlist = wishlist;
 
         await savedUser.save();
 

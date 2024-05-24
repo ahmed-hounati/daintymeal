@@ -1,7 +1,7 @@
 import { IsString, IsArray, IsObject, IsBoolean, IsNumber, IsDate, IsNotEmpty } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class CreateItemDto {
+export class CreatePlatDto {
     @IsString()
     @IsNotEmpty()
     item_code: string;
@@ -39,7 +39,7 @@ export class CreateItemDto {
 
     @IsString()
     @IsNotEmpty()
-    item_price: string;
+    item_price: number;
 
     @IsString()
     @IsNotEmpty()

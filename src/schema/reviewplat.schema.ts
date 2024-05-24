@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { Item } from './item.schema';
+import { Plat } from './plat.schema';
 
 export type ReviewplatDocument = Reviewplat & Document;
 
@@ -29,8 +29,8 @@ export class Reviewplat {
   @Prop({ required: true, default: Date.now })
   addedAt: Date;
 
-  @Prop({ type: Types.ObjectId, ref: Item.name })
-  item: Types.ObjectId;
+  @Prop({ type: Types.ObjectId, ref: Plat.name })
+  plat: Types.ObjectId;
 }
 
 export const ReviewplatSchema = SchemaFactory.createForClass(Reviewplat);

@@ -1,44 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
-import { Interface } from 'readline';
+import { Document } from 'mongoose';
 import { Categorie } from './category.schema';
 
-
-export interface Name {
-    en: string;
-    fr: string;
-    ar: string;
-}
-
-enum Status {
-    active = "ACTIVE",
-    inactive = "INACTIVE",
-    banned = "BANNED"
-}
-
-
-export interface Statics {
-    contRatings: number;
-    countSaves: number;
-    countOrders: number;
-}
-
-
-export interface ItemInterface {
-    _id: string;
-    name: Name;
-    categories: Categorie;
-    image: string[];
-    status: Status;
-    statics: Statics;
-    created_at: Date;
-    valid: boolean;
-}
-
-export type ItemDocument = HydratedDocument<Item>;
+export type PlatDocument = Plat & Document;
 
 @Schema()
-export class Item {
+export class Plat {
     @Prop({ required: true })
     item_code: string;
 
@@ -68,7 +35,7 @@ export class Item {
     rating: number;
 
     @Prop({ required: true })
-    item_price: string;
+    item_price: number;
 
     @Prop({ required: true })
     currency: string;
@@ -79,4 +46,5 @@ export class Item {
     @Prop({ required: true })
     created_at: Date;
 }
-export const ItemSchema = SchemaFactory.createForClass(Item);
+
+export const PlatSchema = SchemaFactory.createForClass(Plat);

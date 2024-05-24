@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as MongooseSchema } from 'mongoose';
-
+import { Document, Model, Schema as MongooseSchema } from 'mongoose';
+import { generateFilterCode } from 'src/utils/generate-filter-code';
+export type TransactionDocument = Transaction & Document;
 @Schema()
 export class Transaction extends Document {
   @Prop({ required: true })
@@ -34,7 +35,7 @@ export class Transaction extends Document {
   @Prop({ required: true })
   method_payment: string;
 
-  @Prop({ required: true })
+  @Prop({ default: 'transaction' })
   type_service: string;
 
   @Prop({ default: 'A' })
@@ -45,3 +46,17 @@ export class Transaction extends Document {
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);
+
+// TransactionSchema.pre<TransactionDocument>('save', async function (next) {
+//   if (this.isNew) {
+//     let transactionCode: string;
+//     let transactionExists: TransactionDocument | null;
+//     const model = this.constructor as Model<TransactionDocument>;
+//     do {
+//       transactionCode = generateFilterCode();
+//       transactionExists = await model.findOne({ transaction_code: transactionCode }).exec();
+//     } while (transactionExists);
+//     this.transaction_code = transactionCode;
+//   }
+//   next();
+// });

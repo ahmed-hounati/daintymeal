@@ -2,15 +2,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CloudinaryService } from 'src/cloudinary.service';
-import { Item, ItemDocument } from 'src/schema/item.schema';
 import { Reviewplat, ReviewplatDocument } from 'src/schema/reviewplat.schema';
 import { CreateReviewplatDto } from './dto/create-reviewplat.dto';
+import { Plat, PlatDocument } from 'src/schema/plat.schema';
 
 @Injectable()
 export class ReviewplatsService {
     constructor(
         @InjectModel(Reviewplat.name) private commentModel: Model<ReviewplatDocument>,
-        @InjectModel(Item.name) private readonly restoModel: Model<ItemDocument>,
+        @InjectModel(Plat.name) private readonly restoModel: Model<PlatDocument>,
         private cloudinaryService: CloudinaryService, 
       ) {}
     
