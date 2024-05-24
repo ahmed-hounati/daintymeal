@@ -1,54 +1,55 @@
-import { IsEnum, IsNotEmpty, IsString, IsArray, ValidateNested, IsBoolean, IsDate, IsObject, IsMongoId } from 'class-validator';
+import { IsString, IsArray, IsObject, IsBoolean, IsNumber, IsDate, IsNotEmpty } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class NameDto {
-    @IsString()
-    @IsNotEmpty()
-    en: string;
-
-    @IsString()
-    @IsNotEmpty()
-    fr: string;
-
-    @IsString()
-    @IsNotEmpty()
-    ar: string;
-}
-
-
-export class StaticsDto {
-    @IsNotEmpty()
-    contRatings: number;
-
-    @IsNotEmpty()
-    countSaves: number;
-
-    @IsNotEmpty()
-    countOrders: number;
-}
-
 export class CreateItemDto {
+    @IsString()
     @IsNotEmpty()
-    @ValidateNested()
-    @Type(() => NameDto)
-    name: NameDto;
+    item_code: string;
 
-    @IsMongoId({ each: true })
+    @IsString()
     @IsNotEmpty()
-    categoryId: string;
+    name: string;
+
+    @IsString()
+    @IsNotEmpty()
+    category_code: string;
 
     @IsArray()
+    @IsString({ each: true })
     image: string[];
 
-    @ValidateNested()
-    @Type(() => StaticsDto)
-    statics: StaticsDto;
+    @IsObject()
+    statics: {
+        contRatings: number;
+        countSaves: number;
+        countOrders: number;
+    };
 
-    @IsEnum(["ACTIVE", "INACTIVE", "BANNED"], {
-        message: 'valid role pls'
-    })
-    status: "ACTIVE" | "INACTIVE" | "BANNED";
+    @IsString()
+    @IsNotEmpty()
+    status: string;
 
     @IsBoolean()
+    @IsNotEmpty()
     valid: boolean;
+
+    @IsNumber()
+    @IsNotEmpty()
+    rating: number;
+
+    @IsString()
+    @IsNotEmpty()
+    item_price: string;
+
+    @IsString()
+    @IsNotEmpty()
+    currency: string;
+
+    @IsNumber()
+    discount: number;
+
+    @IsDate()
+    @Type(() => Date)
+    @IsNotEmpty()
+    created_at: Date;
 }

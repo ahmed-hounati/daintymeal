@@ -27,6 +27,7 @@
     "@nestjs/platform-express": "^10.3.8",
     "@types/mongoose": "^5.11.97",
     "@vendia/serverless-express": "^4.12.6",
+    "aws-lambda": "^1.0.7",
     "aws-serverless-express": "^3.4.0",
     "axios": "^1.7.0",
     "class-transformer": "^0.5.1",

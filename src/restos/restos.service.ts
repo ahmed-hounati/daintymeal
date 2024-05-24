@@ -13,7 +13,8 @@ export class RestosService {
         @InjectModel(Resto.name) private restoModel: Model<Resto>,
         @InjectModel(Categorie.name) private categorieModel: Model<Categorie>,
         @InjectModel(Address.name) private addressModel: Model<Address>,
-        private cloudinaryService: CloudinaryService
+
+        private cloudinaryService: CloudinaryService,
     ) {}
     async findAll(language: string): Promise<any> {
         const restos = await this.restoModel.find().exec();
@@ -25,7 +26,6 @@ export class RestosService {
             };
         });
     }
-
     async findOne(id: string) {
         const resto = await this.restoModel.findById(id).exec();
         if (!resto) {
@@ -33,10 +33,8 @@ export class RestosService {
         }
         return resto;
     }
-
     async create(createRestoDto: CreateRestoDto): Promise<Resto> {
         const { name, address, categoryIds, image, status, rating, workingTime, valid, statics } = createRestoDto;
-
         const existingResto = await this.restoModel.findOne({ 'name.en': name.en }).exec();
         if (existingResto) {
             throw new NotFoundException('Restaurant with this name already exists');
@@ -45,6 +43,7 @@ export class RestosService {
         const categories = await this.categorieModel.find({ _id: { $in: categoryIds } }).exec();
         if (categories.length !== categoryIds.length) {
             throw new NotFoundException('One or more categories not found');
+        
         }
         const uploadedImages = [];
         for (const imageUrl of image) {
@@ -59,12 +58,12 @@ export class RestosService {
         const addressObj = await this.addressModel.findById(address).exec();
         if (!addressObj) {
             throw new NotFoundException('Address not found');
-        }   
+        }
         const createdResto = new this.restoModel({
             name,
             categories,
-            address: addressObj,
-            image: uploadedImages,
+            address:addressObj,
+            image:uploadedImages,
             status,
             rating,
             workingTime,

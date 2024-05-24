@@ -32,12 +32,12 @@ export class ItemsService {
     }
 
     async create(createItemDto: CreateItemDto): Promise<Item> {
-        const { name, categoryId, image, statics, status, valid } = createItemDto;
+        const { name, category_code, image, statics, status, valid } = createItemDto;
         const existingItem = await this.itemModel.findOne({ name: createItemDto.name }).exec()
         if (existingItem) {
             throw new NotFoundException('Item with this name already exists')
         }
-        const categorie = await this.categorieModel.find({ _id: { $in: categoryId } }).exec();
+        const categorie = await this.categorieModel.find({ category_code: { $in: category_code } }).exec();
         const uploadedImages = [];
         for (const imageUrl of image) {
             try {

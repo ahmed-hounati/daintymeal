@@ -4,7 +4,6 @@ import { Interface } from 'readline';
 import { Categorie } from './category.schema';
 
 
-
 export interface Name {
     en: string;
     fr: string;
@@ -40,28 +39,44 @@ export type ItemDocument = HydratedDocument<Item>;
 
 @Schema()
 export class Item {
-    @Prop({type: Object})
-    name: Name;
+    @Prop({ required: true })
+    item_code: string;
+
+    @Prop({ required: true })
+    name: string;
 
     @Prop({ type: [{ type: Object }], required: true })
-    categorie: Categorie;
+    category: Categorie;
 
-    @Prop()
+    @Prop([String])
     image: string[];
 
     @Prop({ type: Object })
-    statics: Statics;
+    statics: {
+        contRatings: number;
+        countSaves: number;
+        countOrders: number;
+    };
 
-    @Prop({ enum: Status })
-    status: Status;
+    @Prop({ required: true })
+    status: string;
 
-    @Prop({ default: Date.now })
-    created_at: Date;
-
-    @Prop()
+    @Prop({ required: true })
     valid: boolean;
 
-    @Prop({ default: 0 })
+    @Prop({ required: true })
     rating: number;
+
+    @Prop({ required: true })
+    item_price: string;
+
+    @Prop({ required: true })
+    currency: string;
+
+    @Prop({ default: 0 })
+    discount: number;
+
+    @Prop({ required: true })
+    created_at: Date;
 }
 export const ItemSchema = SchemaFactory.createForClass(Item);

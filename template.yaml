@@ -1,44 +1,29 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  Daintymeal Project
-
+  daintymeal
 Globals:
   Function:
-    Timeout: 10
-    Tracing: Active
-    LoggingConfig:
-      LogFormat: JSON
-  Api:
-    TracingEnabled: true
+    Timeout: 30
 
 Resources:
-  DaintymealFunction:
+  NestFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: .aws-sam/build/DaintymealFunction
-      Handler: lambda.handler
+      CodeUri: .
+      Handler: dist/lambda.handler
+
       Runtime: nodejs20.x
       Architectures:
         - x86_64
       Events:
-        HelloWorld:
+        Nest:
           Type: Api
           Properties:
-            Path: /{proxy+}
+            Path: /
             Method: any
 
-  ApplicationResourceGroup:
-    Type: AWS::ResourceGroups::Group
-    Properties:
-      Name:
-        Fn::Sub: ApplicationInsights-SAM-${AWS::StackName}
-      ResourceQuery:
-        Type: CLOUDFORMATION_STACK_1_0
-
-  ApplicationInsightsMonitoring:
-    Type: AWS::ApplicationInsights::Application
-    Properties:
-      ResourceGroupName:
-        Ref: ApplicationResourceGroup
-      AutoConfigurationEnabled: 'true'
+Outputs:
+  NestApi:
+    Description: "API Gateway endpoint URL for Prod stage for a Nest function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
