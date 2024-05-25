@@ -3,7 +3,6 @@ import { Transaction } from 'src/schema/transaction.schema';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { v4 } from 'uuid';
 import { Plat } from 'src/schema/plat.schema';
 
 @Injectable()
@@ -19,20 +18,20 @@ export class PaymentsService {
         const tvaRate = 0.20;
         const foodListWithDetails = await Promise.all(
             food_list.map(async (foodItem) => {
-                const item = await this.platModel.findOne({ item_code: foodItem.item_code });
+                const item = await this.platModel.findOne({ plat_code: foodItem.plat_code });
                 if (!item) {
-                    throw new NotFoundException(`Item with code ${foodItem.item_code} not found`);
+                    throw new NotFoundException(`Item with code ${foodItem.plat_code} not found`);
                 }
-                const itemPrice = item.item_price;
+                const itemPrice = item.plat_price;
                 const discount = item.discount || 0;
                 const priceAfterDiscount = itemPrice - discount;
                 const totalPrice = priceAfterDiscount * foodItem.quantity;
                 totalAmountHT += totalPrice;
     
                 return {
-                    item_code: foodItem.item_code,
-                    item_name: item.name,
-                    item_price: item.item_price,
+                    plat_code: foodItem.plat_code,
+                    plat_name: item.name,
+                    plat_price: item.plat_price,
                     quantity: foodItem.quantity,
                     currency: item.currency,
                     discount: discount,

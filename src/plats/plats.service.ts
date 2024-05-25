@@ -24,7 +24,7 @@ export class PlatService {
 
         const plat = new this.platModel({
             ...rest,
-            item_code: platCode,
+            plat_code: platCode,
             category: category,
         });
 

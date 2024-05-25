@@ -4,7 +4,7 @@ import { Type } from 'class-transformer';
 export class CreatePlatDto {
     @IsString()
     @IsNotEmpty()
-    item_code: string;
+    plat_code: string;
 
     @IsString()
     @IsNotEmpty()

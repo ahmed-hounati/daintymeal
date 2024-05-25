@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Model, Schema as MongooseSchema } from 'mongoose';
-import { generateFilterCode } from 'src/utils/generate-filter-code';
 export type TransactionDocument = Transaction & Document;
 @Schema()
 export class Transaction extends Document {
@@ -12,9 +11,9 @@ export class Transaction extends Document {
 
   @Prop({ type: Array, required: true })
   food_list: {
-    item_code: string;
-    item_name: string;
-    item_price: number;
+    plat_code: string;
+    plat_name: string;
+    plat_price: number;
     quantity: number;
     currency: string;
     discount: number;

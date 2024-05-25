@@ -4,7 +4,7 @@ import { Type } from 'class-transformer';
 class FoodItemDto {
     @IsNotEmpty()
     @IsString()
-    item_code: string;
+    plat_code: string;
 
 
     @IsNotEmpty()
@@ -30,7 +30,7 @@ export class CreatePaymentDto {
     @IsString()
     type_service: string;
 
-    
+
     @IsNotEmpty()
     @IsString()
     method_payment: string;
