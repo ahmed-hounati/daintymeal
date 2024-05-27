@@ -1,25 +1,33 @@
 import { IsNotEmpty, IsString, IsEnum, IsArray, ValidateNested, IsMongoId } from 'class-validator';
-import { Status, Statics} from '../../schema/resto.schema';
+import { Status, Statics } from '../../schema/resto.schema';
 import { Type } from 'class-transformer';
-export class TranslationsDto {
+class LanguageNameDto {
     @IsNotEmpty()
     @IsString()
-    en: string;
+    name: string;
+}
+class FilterNameDto {
+    @IsNotEmpty()
+    @IsString()
+    language: 'ar' | 'fr' | 'en';
 
     @IsNotEmpty()
     @IsString()
-    fr: string;
-
-    @IsNotEmpty()
-    @IsString()
-    ar: string;
+    name: string;
 }
 
 export class CreateRestoDto {
-    @IsNotEmpty()
-    @ValidateNested()
-    @Type(() => TranslationsDto)
-    name: TranslationsDto;
+    
+    @Type(() => LanguageNameDto)
+    ar: LanguageNameDto;
+
+    
+    @Type(() => LanguageNameDto)
+    fr: LanguageNameDto;
+
+
+    @Type(() => LanguageNameDto)
+    en: LanguageNameDto;
 
     @IsNotEmpty()
     @IsMongoId({ each: true })
@@ -49,4 +57,10 @@ export class CreateRestoDto {
     @IsNotEmpty()
     @ValidateNested()
     statics: Statics;
+
+
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => FilterNameDto)
+    filterNames: FilterNameDto[];
 }

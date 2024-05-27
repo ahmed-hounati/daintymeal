@@ -3,6 +3,8 @@ import { HydratedDocument } from 'mongoose';
 import { Categorie } from './category.schema';
 import { Address } from './address.schema';
 
+import { AddFilterNameDto } from 'src/filters/dto/create-filter.dto';
+
 export enum Status {
     ACTIVE = "ACTIVE",
     INACTIVE = "INACTIVE",
@@ -16,15 +18,11 @@ export interface Statics {
     countPlats: number;
     countComments: number;
 }
-export interface Translations {
-    en: string;
-    fr: string;
-    ar: string;
-}
-
 export interface RestoInterface {
     _id: string;
-    name: Translations;
+    ar: string;
+    fr:string;
+    en:string;
     address: Address;
     categorie: Categorie[];
     image: string[];
@@ -33,15 +31,22 @@ export interface RestoInterface {
     workingTime: string;
     valid: boolean;
     statics: Statics;
+    filter: AddFilterNameDto[];
 }
 
 export type RestoDocument = HydratedDocument<Resto>;
 
 @Schema()
 export class Resto {
-    @Prop({ type: Object })
-    name: Translations;
-
+    @Prop({ type: { name: String }, _id: false })
+    ar: { name: string };
+  
+    @Prop({ type: { name: String }, _id: false })
+    fr: { name: string };
+  
+    @Prop({ type: { name: String }, _id: false })
+    en: { name: string };
+    
     @Prop({ type: [{ type: Object }], required: true })
     categories: Categorie[];
 
@@ -68,6 +73,14 @@ export class Resto {
 
     @Prop({ default: 0 })
     rating: number;
+
+
+    @Prop({ type: [{ ar: { name: String }, fr: { name: String }, en: { name: String } }], _id: false  })
+    filterNames: AddFilterNameDto[];
+
+
 }
 
 export const RestoSchema = SchemaFactory.createForClass(Resto);
+
+export { AddFilterNameDto };

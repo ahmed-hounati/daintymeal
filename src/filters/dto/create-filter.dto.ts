@@ -51,9 +51,6 @@ export class CreateFilterDto {
 }
 
 export class AddFilterNameDto {
-  @IsString()
-  filter_code: string;
-
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => FilterNameDto)

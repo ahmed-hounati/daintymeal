@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { FiltersService } from './filters.service';
 import { AddFilterNameDto, CreateFilterDto } from './dto/create-filter.dto';
 import { Filter } from 'src/schema/filter.schema';
+import { DeleteFilterNameDto } from './dto/delete-filter-name.dto';
 
 @Controller('filters')
 export class FiltersController {
@@ -24,5 +25,10 @@ export class FiltersController {
     @Post('add-names')
     async addFilterName(@Body() addFilterNameDto: AddFilterNameDto): Promise<Filter> {
         return this.filterService.addFilterName(addFilterNameDto);
+    }
+
+    @Post('delete-filter-name')
+    async deleteFilterName(@Body() deleteFilterNameDto: DeleteFilterNameDto): Promise<Filter> {
+        return this.filterService.deleteFilterName(deleteFilterNameDto);
     }
 }

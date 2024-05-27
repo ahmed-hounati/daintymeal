@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Resto } from '../schema/resto.schema';
+import { AddFilterNameDto, Resto } from '../schema/resto.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateRestoDto } from './dto/create-resto.dto';
@@ -7,21 +7,22 @@ import { UpdateRestoDto } from './dto/update-resto.dto';
 import { CloudinaryService } from 'src/cloudinary.service';
 import { Categorie } from '../schema/category.schema';
 import { Address } from '../schema/address.schema';
+import { FiltersService } from 'src/filters/filters.service';
 @Injectable()
 export class RestosService {
     constructor(
         @InjectModel(Resto.name) private restoModel: Model<Resto>,
         @InjectModel(Categorie.name) private categorieModel: Model<Categorie>,
         @InjectModel(Address.name) private addressModel: Model<Address>,
-
         private cloudinaryService: CloudinaryService,
+        private  filterService: FiltersService,
     ) {}
     async findAll(language: string): Promise<any> {
         const restos = await this.restoModel.find().exec();
         return restos.map((restaurant) => {
             return {
                 ...restaurant.toObject(),
-                name: restaurant.name[language],
+                name: restaurant.en[language],
                 address: restaurant.address[language]
             };
         });
@@ -34,17 +35,24 @@ export class RestosService {
         return resto;
     }
     async create(createRestoDto: CreateRestoDto): Promise<Resto> {
-        const { name, address, categoryIds, image, status, rating, workingTime, valid, statics } = createRestoDto;
-        const existingResto = await this.restoModel.findOne({ 'name.en': name.en }).exec();
+        const { ar,fr,en, address, categoryIds, image, status, rating, workingTime, valid, statics ,filterNames } = createRestoDto;
+    
+        const existingResto = await this.restoModel.findOne({
+            $or: [
+                { 'ar.name': ar.name },
+                { 'fr.name': fr.name },
+                { 'en.name': en.name }
+            ]
+        }).exec();
         if (existingResto) {
             throw new NotFoundException('Restaurant with this name already exists');
         }
-
+    
         const categories = await this.categorieModel.find({ _id: { $in: categoryIds } }).exec();
         if (categories.length !== categoryIds.length) {
             throw new NotFoundException('One or more categories not found');
-        
         }
+    
         const uploadedImages = [];
         for (const imageUrl of image) {
             try {
@@ -55,23 +63,42 @@ export class RestosService {
                 throw new NotFoundException('Error uploading image(s)');
             }
         }
+    
         const addressObj = await this.addressModel.findById(address).exec();
         if (!addressObj) {
             throw new NotFoundException('Address not found');
         }
         const createdResto = new this.restoModel({
-            name,
+            ar,
+            en,
+            fr,
             categories,
-            address:addressObj,
-            image:uploadedImages,
+            address: addressObj,
+            image: uploadedImages,
             status,
             rating,
             workingTime,
             valid,
             statics,
+            filterNames: [{ ar: {name: ar.name }, fr: { name: fr.name }, en: { name: en.name } }]
         });
-        return createdResto.save();
+         const addFilterNameDto: AddFilterNameDto = {
+            
+             filterNames: filterNames
+         };
+         try {
+             await this.filterService.addFilterName(addFilterNameDto);
+         } catch (error) {
+            console.error('Error adding filter names:', error);
+            throw new NotFoundException('Error adding filter names');
+         }
+    
+        const savedResto = await createdResto.save();
+    
+        return savedResto;
     }
+    
+    
 
     async update(id: string, updateRestoDto: UpdateRestoDto) {
         const updatedResto = this.restoModel.findByIdAndUpdate(id, updateRestoDto, { new: true });

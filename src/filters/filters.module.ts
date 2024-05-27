@@ -6,7 +6,8 @@ import { Filter, FilterSchema } from 'src/schema/filter.schema';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: Filter.name, schema: FilterSchema }])],
-  controllers: [FiltersController],
+  controllers: [FiltersController ],
   providers: [FiltersService],
+  exports: [FiltersService]
 })
 export class FilterModule {}
