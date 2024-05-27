@@ -118,4 +118,28 @@ export class RestosService {
         await this.restoModel.findByIdAndDelete(id);
         return "Restaurant deleted successfully";
     }
+
+
+    async searchItems(arg: CreateRestoDto): Promise<any[]> {
+        try {
+            const pipeline = [
+                {
+                    $search: {
+                        index: "autocompleteResto",
+                        autocomplete: {
+                            query: arg.name,
+                            path: "name.en"
+                        }
+                    }
+                },
+                {
+                    $limit: 10
+                }
+            ];
+            return await this.restoModel.aggregate(pipeline).exec();
+        } catch (error) {
+            console.error("Error executing search query:", error);
+            throw new Error("Search query failed");
+        }
+    }
 }

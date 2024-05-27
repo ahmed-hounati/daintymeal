@@ -6,6 +6,13 @@ import { UpdateRestoDto } from './dto/update-resto.dto';
 @Controller('restos')
 export class RestosController {
     constructor(private readonly restosService: RestosService) { }
+
+
+    @Get('search')
+    async searchItems(@Query() searchItemDto: CreateRestoDto): Promise<any[]> {
+        return this.restosService.searchItems(searchItemDto);
+    }
+
     @Get()
     async findAll(@Query('lang') lang: string) {
         const language = lang || 'en';
@@ -32,5 +39,8 @@ export class RestosController {
     delete(@Param('id') id: string) {
         return this.restosService.delete(id)
     }
+
+
+
 
 }

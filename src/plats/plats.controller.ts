@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { PlatService } from './plats.service';
 import { Plat } from '../schema/plat.schema';
 import { CreatePlatDto } from './dto/create-plat.dto';
@@ -15,5 +15,10 @@ export class PlatController {
     @Get()
     async findAll(): Promise<Plat[]> {
         return this.platService.findAll();
+    }
+
+    @Get('search')
+    async searchItems(@Query() searchItemDto: CreatePlatDto): Promise<Plat[]> {
+        return this.platService.searchItems(searchItemDto);
     }
 }

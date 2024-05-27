@@ -27,24 +27,44 @@ export class wishlistsService {
     }
 
 
-    async addToWishlist(user_code: string, item_Code: string): Promise<Wishlist> {
+    async addToWishlist(user_code: string, plat_code: string): Promise<Wishlist> {
         const wishlist = await this.wishlistModel.findOne({ user_code });
 
         if (!wishlist) {
             throw new NotFoundException('Wishlist not found for user ' + user_code);
         }
-        const plat = await this.platModel.findOne({ item_Code });
+        const plat = await this.platModel.findOne({ plat_code });
 
         if (!plat) {
-            throw new NotFoundException('Plat with code ' + item_Code + ' not found');
+            throw new NotFoundException('Plat with code ' + plat_code + ' not found');
         }
 
-        if (wishlist.plats.find((p) => p.plat_code === item_Code)) {
-            throw new BadRequestException('Plat with code ' + item_Code + ' already exists in the wishlist');
+        if (wishlist.plats.find((p) => p.plat_code === plat_code)) {
+            throw new BadRequestException('Plat with code ' + plat_code + ' already exists in the wishlist');
         }
         wishlist.plats.push(plat);
 
         return wishlist.save();
     }
+
+
+    async removeWishlist(user_code: string, plat_code: string): Promise<Wishlist> {
+        const wishlist = await this.wishlistModel.findOne({ user_code });
+
+        if (!wishlist) {
+            throw new NotFoundException('Wishlist not found');
+        }
+
+        const platIndex = wishlist.plats.findIndex(p => p.plat_code === plat_code);
+
+        if (platIndex === -1) {
+            throw new NotFoundException('Plat not found in wishlist');
+        }
+
+        wishlist.plats.splice(platIndex, 1);
+
+        return wishlist.save();
+    }
+
 
 }
