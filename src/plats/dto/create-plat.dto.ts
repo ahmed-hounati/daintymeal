@@ -39,7 +39,7 @@ export class CreatePlatDto {
 
     @IsString()
     @IsNotEmpty()
-    item_price: string;
+    plat_price: string;
 
     @IsString()
     @IsNotEmpty()

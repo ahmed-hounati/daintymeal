@@ -41,4 +41,22 @@ export class PlatService {
     async findAll(): Promise<Plat[]> {
         return this.platModel.find().exec();
     }
+
+    async searchItems(searchItemDto: CreatePlatDto): Promise<Plat[]> {
+        const { name, category_code, ...rest } = searchItemDto;
+
+        const query: any = { ...rest };
+        if (name) {
+            query.name = { $regex: name, $options: 'i' };
+        }
+        if (category_code) {
+            query.category_code = category_code;
+        }
+
+        const items = await this.platModel.find(query).exec();
+        if (!items || items.length === 0) {
+            throw new NotFoundException('No items found matching the search criteria');
+        }
+        return items;
+    }
 }
