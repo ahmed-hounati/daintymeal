@@ -35,4 +35,13 @@ export class WishlistsController {
         const wishlist = await this.wishlistsService.addToWishlist(userCode, pltCode);
         return wishlist;
     }
+
+
+    @Post('removeWishlist')
+    async removeWishlistFromUserWishlist(
+        @Body() removeWishlistDto: AddWishlistDto,
+    ): Promise<Wishlist> {
+        const { user_code, plat_code } = removeWishlistDto;
+        return this.wishlistsService.removeWishlist(user_code, plat_code);
+    }
 }

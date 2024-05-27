@@ -24,7 +24,7 @@ export class PlatService {
 
         const plat = new this.platModel({
             ...rest,
-            item_code: platCode,
+            plat_code: platCode,
             category: category,
         });
 
@@ -32,7 +32,7 @@ export class PlatService {
     }
 
     private async generatePlatCode(): Promise<string> {
-        const plats = await this.platModel.find().sort({ item_code: -1 }).limit(1).exec();
+        const plats = await this.platModel.find().sort({ plat_code: -1 }).limit(1).exec();
         const lastPlatCode = plats.length ? plats[0].plat_code : 'plt_000';
         const newCodeNumber = parseInt(lastPlatCode.split('_')[1]) + 1;
         return `plt_${newCodeNumber.toString().padStart(3, '0')}`;
