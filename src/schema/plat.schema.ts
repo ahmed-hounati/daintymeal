@@ -35,7 +35,7 @@ export class Plat {
     rating: number;
 
     @Prop({ required: true })
-    item_price: string;
+    plat_price: number;
 
     @Prop({ required: true })
     currency: string;

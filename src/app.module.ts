@@ -6,6 +6,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CategorieModule } from './categories/categories.module';
 import { CommentModule } from './comments/comments.module';
 import { RestosModule } from './restos/restos.module';
+import { ReviewplatsModule } from './reviewplats/reviewplats.module';
+import { FilterModule } from './filters/filters.module';
 import { AddressModule } from './address/address.module';
 import { UsersService } from './users/users.service';
 import { UsersController } from './users/users.controller';
@@ -13,6 +15,7 @@ import { UsersModule } from './users/users.module';
 import { wishlistsService } from './wishlists/wishlists.service';
 import { WishlistsController } from './wishlists/wishlists.controller';
 import { wishlistsModule } from './wishlists/wishlists.module';
+import { PaymentsModule } from './payments/payments.module';
 import { PlatModule } from './plats/plats.module';
 
 @Module({
@@ -30,9 +33,13 @@ import { PlatModule } from './plats/plats.module';
     CategorieModule,
     CommentModule,
     RestosModule,
+    ReviewplatsModule,
+    AddressModule,
+    FilterModule,
     AddressModule,
     UsersModule,
     wishlistsModule,
+    PaymentsModule,
     PlatModule
   ],
   controllers: [AppController, UsersController, WishlistsController],

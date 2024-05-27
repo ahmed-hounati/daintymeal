@@ -1,7 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { Address, AddressSchema } from './address.schema';  // Adjust the path as needed
-import { Wishlist, WishlistItemSchema } from './wishlist.schema';  // Adjust the path as needed
 
 export type UserDocument = User & Document;
 
@@ -15,6 +13,19 @@ class SocialMedia {
 }
 
 const SocialMediaSchema = SchemaFactory.createForClass(SocialMedia);
+
+
+@Schema()
+class Address {
+    @Prop()
+    address: string;
+
+    @Prop()
+    city: string;
+
+    @Prop()
+    country: string;
+}
 
 @Schema()
 export class User {
@@ -39,14 +50,6 @@ export class User {
     @Prop()
     birthdate: string;
 
-    @Prop({ type: AddressSchema })
-    fr: Address;
-
-    @Prop({ type: AddressSchema })
-    en: Address;
-
-    @Prop({ type: AddressSchema })
-    ar: Address;
 
     @Prop()
     status: string;
@@ -58,13 +61,20 @@ export class User {
     language_default: string;
 
     @Prop()
+    fr: Address;
+
+    @Prop()
+    en: Address;
+
+    @Prop()
+    ar: Address;
+
+    @Prop()
     added_date: Date;
 
     @Prop()
     type_service: string;
 
-    @Prop({ type: WishlistItemSchema })
-    wishlist: Wishlist;
 
     @Prop({ type: SocialMediaSchema })
     social_media: SocialMedia;

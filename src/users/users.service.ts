@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { User, UserDocument } from '../schema/user.schema';
 import { wishlistsService } from '../wishlists/wishlists.service';
 import { Wishlist } from 'src/schema/wishlist.schema';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -12,18 +13,33 @@ export class UsersService {
         private wishlistService: wishlistsService
     ) { }
 
-    async create(createUserDto: any): Promise<User> {
-        const createdUser = new this.userModel(createUserDto);
-        const savedUser = await createdUser.save();
+    async create(createUserDto: CreateUserDto): Promise<User> {
+    const { fr, en, ar, ...rest } = createUserDto;
 
-        const wishlist = await this.wishlistService.create(savedUser.user_code);
+    const userCode = await this.generateUserCode();
 
-        savedUser.wishlist = wishlist;
+    const user = new this.userModel({
+        ...rest,
+        user_code: userCode,
+        fr: { ...fr },
+        en: { ...en },
+        ar: { ...ar },
+    });
 
-        await savedUser.save();
+    const savedUser = await user.save();
+    
+    // Create wishlist for the user
+    await this.wishlistService.create(savedUser.user_code);
 
-        return savedUser;
-    }
+    return savedUser;
+}
+
+private async generateUserCode(): Promise<string> {
+    const users = await this.userModel.find().sort({ user_code: -1 }).limit(1).exec();
+    const lastUserCode = users.length ? users[0].user_code : 'usr_000';
+    const newCodeNumber = parseInt(lastUserCode.split('_')[1]) + 1;
+    return `usr_${newCodeNumber.toString().padStart(3, '0')}`;
+}
 
     async findAll(): Promise<User[]> {
         return this.userModel.find().exec();

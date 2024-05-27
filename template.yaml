@@ -1,24 +1,24 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: >
   daintymeal
-
 Globals:
   Function:
     Timeout: 30
 
 Resources:
   NestFunction:
-    Type: AWS::Serverless::Function 
+    Type: AWS::Serverless::Function
     Properties:
       CodeUri: .
       Handler: dist/lambda.handler
+
       Runtime: nodejs20.x
       Architectures:
         - x86_64
       Events:
         Nest:
-          Type: Api 
+          Type: Api
           Properties:
             Path: /
             Method: any

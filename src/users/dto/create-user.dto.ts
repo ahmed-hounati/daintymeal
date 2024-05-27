@@ -12,13 +12,6 @@ class Address {
     country: string;
 }
 
-class WishlistItem {
-    @IsString()
-    item_code: string;
-
-    @IsDate()
-    wishadded_date: Date;
-}
 
 enum Gender {
     Male = 'M',
@@ -80,11 +73,6 @@ export class CreateUserDto {
 
     @IsString()
     type_service: string;
-
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => WishlistItem)
-    wishlist: WishlistItem[];
 
     @IsOptional()
     @IsString()

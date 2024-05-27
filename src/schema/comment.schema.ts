@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
+import { Resto } from './resto.schema';
 
 export type CommentDocument = Comment & Document;
 
@@ -14,7 +15,7 @@ class CreatedBy {
 
 const CreatedBySchema = SchemaFactory.createForClass(CreatedBy);
 
-@Schema()
+@Schema({collection: 'reviewResto'})
 export class Comment {
   @Prop({ type: CreatedBySchema, required: true })
   createdBy: CreatedBy;
@@ -27,6 +28,9 @@ export class Comment {
 
   @Prop({ required: true, default: Date.now })
   addedAt: Date;
+
+  @Prop({ type: Types.ObjectId, ref: Resto.name })
+  resto: Types.ObjectId;
 }
 
 export const CommentSchema = SchemaFactory.createForClass(Comment);
