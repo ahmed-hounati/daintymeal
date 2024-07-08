@@ -17,8 +17,26 @@ export class PlatController {
         return this.platService.findAll();
     }
 
+    @Get('two')
+    async findTwoPlats(): Promise<Plat[]> {
+        return this.platService.findTwoPlats();
+    }
+
     @Get('search')
     async searchItems(@Query() searchItemDto: CreatePlatDto): Promise<Plat[]> {
         return this.platService.searchItems(searchItemDto);
+    }
+    @Get('trending')
+    async findTrendingPlats() {
+        return this.platService.findTrendingPlats();
+    }
+
+    @Get('most-sales')
+    async findMostSalesPlats() {
+        return this.platService.findMostSalesPlats();
+    }
+    @Get('filter')
+    async findPlatsByCategory(@Query('category') category: string): Promise<Plat[]> {
+        return this.platService.findPlatsByCategory(category);
     }
 }

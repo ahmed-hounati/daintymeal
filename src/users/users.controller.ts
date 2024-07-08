@@ -16,14 +16,19 @@ export class UsersController {
         return this.usersService.findAll();
     }
 
-    @Get(':id')
-    async findOne(@Param('id') id: string): Promise<User> {
-        return this.usersService.findOne(id);
+    @Get(':user_code')
+    async findOne(@Param('user_code') user_code: string): Promise<User> {
+        return this.usersService.findOne(user_code);
     }
 
-    @Put(':id')
-    async update(@Param('id') id: string, @Body() updateUserDto: any): Promise<User> {
-        return this.usersService.update(id, updateUserDto);
+    @Put(':user_code')
+    async update(@Param('user_code') user_code: string, @Body() updateUserDto: any): Promise<User> {
+        return this.usersService.update(user_code, updateUserDto);
+    }
+
+    @Post(':user_code/avatar')
+    async updateImage(@Param('user_code') user_code: string, @Body('imageUrl') imageUrl: string) {
+        return this.usersService.updateImage(user_code, imageUrl); 
     }
 
 

@@ -14,6 +14,11 @@ export class CreatePlatDto {
     @IsNotEmpty()
     category_code: string;
 
+    @IsString()
+    @IsNotEmpty()
+    resto_code: string;
+
+
     @IsArray()
     @IsString({ each: true })
     image: string[];

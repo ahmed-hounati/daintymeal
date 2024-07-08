@@ -20,17 +20,17 @@ export class Comment {
   @Prop({ type: CreatedBySchema, required: true })
   createdBy: CreatedBy;
 
-  @Prop({ required: true })
+  @Prop()
   comment: string;
 
-  @Prop({ required: true, min: 0, max: 5 })
+  @Prop({ min: 0, max: 5 , default: 0})
   rating: number;
 
   @Prop({ required: true, default: Date.now })
   addedAt: Date;
 
-  @Prop({ type: Types.ObjectId, ref: Resto.name })
-  resto: Types.ObjectId;
+  @Prop({ required: true})
+  resto_code: string;
 }
 
 export const CommentSchema = SchemaFactory.createForClass(Comment);

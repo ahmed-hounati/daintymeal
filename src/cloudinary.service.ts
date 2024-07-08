@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { v2 as cloudinary, UploadApiResponse } from 'cloudinary';
+import axios from 'axios';
+import { Readable } from 'stream';
+import { v2 as cloudinary, UploadApiErrorResponse, UploadApiResponse } from 'cloudinary';
 
 @Injectable()
 export class CloudinaryService {
@@ -16,5 +18,18 @@ export class CloudinaryService {
     return cloudinary.uploader.upload(imageUrl, {
         folder: folderName 
       });
+  }
+  async uploadSVG(file: string ,folderName: string): Promise<UploadApiResponse> {
+    try {
+      if (file) {
+    
+        return cloudinary.uploader.upload(file, {
+          folder: folderName,
+          resource_type: 'image',
+        });
+      }
+    } catch (error) {
+      throw new Error(`Failed to upload SVG: ${error.message}`);
+    }
   }
 }

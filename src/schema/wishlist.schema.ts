@@ -1,19 +1,18 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import { Plat } from '../schema/plat.schema';
+// src/schema/watchlist.schema.ts
 
-export type WishlistItemDocument = Wishlist & Document;
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
+import { Plat } from './plat.schema';
+
+export type WatchlistDocument = Watchlist & Document;
 
 @Schema()
-export class Wishlist {
-    @Prop()
-    user_code: string;
+export class Watchlist {
+  @Prop({ required: true })
+  user_code: string;
 
-    @Prop({ type: [{ type: Object }], required: true })
-    plats: Plat[];
-
-    @Prop()
-    addedAt: Date;
+  @Prop({ type: Types.ObjectId, ref: Plat.name, required: true })  // Reference to Plat schema
+  plat: Plat;
 }
 
-export const WishlistItemSchema = SchemaFactory.createForClass(Wishlist);
+export const WatchlistSchema = SchemaFactory.createForClass(Watchlist);

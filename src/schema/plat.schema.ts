@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { Categorie } from './category.schema';
+import { Resto } from './resto.schema';
 
 export type PlatDocument = Plat & Document;
 
@@ -17,6 +18,9 @@ export class Plat {
 
     @Prop([String])
     image: string[];
+
+    @Prop({ required: true })
+    resto: string;
 
     @Prop({ type: Object })
     statics: {

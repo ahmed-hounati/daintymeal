@@ -17,6 +17,7 @@ class FilterNameDto {
 }
 
 export class CreateRestoDto {
+
     
     @Type(() => LanguageNameDto)
     ar: LanguageNameDto;
@@ -63,4 +64,7 @@ export class CreateRestoDto {
     @ValidateNested({ each: true })
     @Type(() => FilterNameDto)
     filterNames: FilterNameDto[];
+
+    
+    name: any;
 }
