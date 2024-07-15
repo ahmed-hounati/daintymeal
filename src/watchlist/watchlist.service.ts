@@ -6,7 +6,6 @@ import { Model } from 'mongoose';
 import { Watchlist, WatchlistDocument } from 'src/schema/wishlist.schema';
 import { Plat, PlatDocument } from '../schema/plat.schema';
 import { CreateWatchlistDto } from './dto/create-watchlist.dto';
-import { log } from 'console';
 
 @Injectable()
 export class WatchlistService {

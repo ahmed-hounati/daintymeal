@@ -68,6 +68,14 @@ export class PlatService {
     async findAll(): Promise<Plat[]> {
         return this.platModel.find().exec();
     }
+    
+    async findByCode(platCode: string): Promise<Plat> {
+        const plat = await this.platModel.findOne({ plat_code: platCode }).exec();
+        if (!plat) {
+            throw new NotFoundException(`Plat with code ${platCode} not found`);
+        }
+        return plat;
+    }
 
     async findTwoPlats(): Promise<Plat[]> {
         return this.platModel.find().limit(2).exec();
@@ -75,7 +83,7 @@ export class PlatService {
 
     async findTrendingPlats(): Promise<Plat[]> {
         return this.platModel.aggregate([
-            { $match: { rating: { $gt: 4 } } }  // Filter plats with rating greater than 4
+            { $match: { rating: { $gt: 4 } } } 
         ]).exec();
     }
     async findMostSalesPlats(): Promise<Plat[]> {
@@ -109,5 +117,5 @@ export class PlatService {
         } catch (error) {
           throw new Error(`Error finding plats by category: ${error.message}`);
         }
-      }
+    }
 }
