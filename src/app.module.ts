@@ -12,15 +12,24 @@ import { AddressModule } from './address/address.module';
 import { UsersService } from './users/users.service';
 import { UsersController } from './users/users.controller';
 import { UsersModule } from './users/users.module';
-import { wishlistsService } from './wishlists/wishlists.service';
-import { WishlistsController } from './wishlists/wishlists.controller';
-import { wishlistsModule } from './wishlists/wishlists.module';
+;
 import { PaymentsModule } from './payments/payments.module';
 import { PlatModule } from './plats/plats.module';
+import { MenusService } from './menus/menus.service';
+import { MenusModule } from './menus/menus.module';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
+import { KeycloakModule } from './keycloak/keycloak.module';
+import { JwtService } from '@nestjs/jwt';
+import { CloudinaryService } from './cloudinary.service';
+import { WatchlistModule } from './watchlist/watchlist.module';
+
 
 @Module({
   imports: [
     ConfigModule.forRoot({
+      envFilePath: '.env',
       isGlobal: true,
     }),
     MongooseModule.forRootAsync({
@@ -38,11 +47,15 @@ import { PlatModule } from './plats/plats.module';
     FilterModule,
     AddressModule,
     UsersModule,
-    wishlistsModule,
+    WatchlistModule,
     PaymentsModule,
-    PlatModule
+    PlatModule,
+    MenusModule,
+    AuthModule,
+    KeycloakModule,
+    WatchlistModule,
   ],
-  controllers: [AppController, UsersController, WishlistsController],
-  providers: [AppService, UsersService, wishlistsService],
+  controllers: [AppController, UsersController , AuthController],
+  providers: [AppService, UsersService, MenusService, AuthService,JwtService ,CloudinaryService],
 })
 export class AppModule { }

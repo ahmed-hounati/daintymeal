@@ -4,6 +4,7 @@ import { Categorie } from './category.schema';
 import { Address } from './address.schema';
 
 import { AddFilterNameDto } from 'src/filters/dto/create-filter.dto';
+import { Plat } from './plat.schema';
 
 export enum Status {
     ACTIVE = "ACTIVE",
@@ -19,15 +20,16 @@ export interface Statics {
     countComments: number;
 }
 export interface RestoInterface {
-    _id: string;
-    ar: string;
-    fr:string;
-    en:string;
+    resto_code:string;
+    ar: { name: string };
+    fr: { name: string };
+    en: { name: string };
     address: Address;
     categorie: Categorie[];
     image: string[];
     status: Status;
     rating: number;
+    plats:Plat[]
     workingTime: string;
     valid: boolean;
     statics: Statics;
@@ -38,6 +40,10 @@ export type RestoDocument = HydratedDocument<Resto>;
 
 @Schema()
 export class Resto {
+
+    @Prop({ required: true })
+    resto_code: string;
+
     @Prop({ type: { name: String }, _id: false })
     ar: { name: string };
   
@@ -46,12 +52,16 @@ export class Resto {
   
     @Prop({ type: { name: String }, _id: false })
     en: { name: string };
+
     
     @Prop({ type: [{ type: Object }], required: true })
     categories: Categorie[];
 
     @Prop({ type: [{ type: Object }], required: true })
     address: Address;
+
+    @Prop({ required: true})
+    plats: string[];
 
     @Prop()
     image: string[];

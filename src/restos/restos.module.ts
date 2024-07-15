@@ -8,11 +8,13 @@ import { CloudinaryService } from 'src/cloudinary.service';
 import { Address, AddressSchema } from 'src/schema/address.schema';
 import { FiltersService } from 'src/filters/filters.service';
 import { FilterModule } from 'src/filters/filters.module';
+import { Plat, PlatSchema } from 'src/schema/plat.schema';
 
 @Module({
   imports: [MongooseModule.forFeature([{ name: Resto.name, schema: RestoSchema }]),
   MongooseModule.forFeature([{ name: Categorie.name, schema: CategorieSchema }]),
   MongooseModule.forFeature([{ name: Address.name, schema: AddressSchema }]),
+  MongooseModule.forFeature([{ name: Plat.name, schema: PlatSchema }]),
   FilterModule
 ],
   providers: [ RestosService, CloudinaryService],

@@ -26,5 +26,5 @@ export class CreateCommentDto {
 
     @IsNotEmpty()
     @IsString()
-    restoId: string;
+    resto_code: string;
 }

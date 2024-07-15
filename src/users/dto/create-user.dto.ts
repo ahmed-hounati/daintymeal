@@ -22,7 +22,7 @@ enum Gender {
 export class CreateUserDto {
     @IsNotEmpty()
     @IsString()
-    username: string;
+    name: string;
 
     @IsString()
     @IsNotEmpty()

@@ -30,7 +30,7 @@ class Address {
 @Schema()
 export class User {
     @Prop()
-    username: string;
+    name: string;
 
     @Prop()
     user_code: string;

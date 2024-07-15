@@ -21,6 +21,9 @@ export const TranslationsSchema = SchemaFactory.createForClass(Translations);
 
 @Schema()
 export class Categorie {
+  toObject(): any {
+      throw new Error('Method not implemented.');
+  }
   @Prop({ unique: true, required: true })
   category_code: string;
 

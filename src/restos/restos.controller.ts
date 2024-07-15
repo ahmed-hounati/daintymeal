@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, ValidationPip
 import { RestosService } from './restos.service';
 import { CreateRestoDto } from './dto/create-resto.dto';
 import { UpdateRestoDto } from './dto/update-resto.dto';
+import { Plat } from 'src/schema/plat.schema';
 
 @Controller('restos')
 export class RestosController {
@@ -14,14 +15,23 @@ export class RestosController {
     }
 
     @Get()
-    async findAll(@Query('lang') lang: string) {
-        const language = lang || 'en';
-        return this.restosService.findAll(language);
+    async findAll() {
+        return this.restosService.findAll();
     }
 
-    @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.restosService.findOne(id);
+    @Get('popular')
+    async findPopularRestos() {
+        return this.restosService.findPopularRestos();
+    }
+
+    @Get(':resto_code')
+    findOneByCode(@Param('resto_code') resto_code: string) {
+        return this.restosService.findOneByCode(resto_code);
+    }
+    
+    @Get(':resto_code/plats')
+    getPlatsByRestoCode(@Param('resto_code') resto_code: string): Promise<Plat[]> {
+        return this.restosService.getPlatsByRestoCode(resto_code);
     }
 
     @Post()
@@ -39,8 +49,5 @@ export class RestosController {
     delete(@Param('id') id: string) {
         return this.restosService.delete(id)
     }
-
-
-
 
 }
